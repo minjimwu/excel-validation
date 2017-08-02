@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Sheet1",
+    "rules": [
+      {
+        "cells": [ "A1:E1" ],
+        "conds": [ "value >= 0.1 and value <= 1" ]
+      }
+    ]
+  }
+]

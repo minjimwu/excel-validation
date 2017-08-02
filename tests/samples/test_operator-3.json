@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Sheet1",
+    "rules": [
+      {
+	"operator": "ANY",
+        "cells": [ "A2:C2" ],
+        "conds": [ "value < 1" ]
+      }
+    ]
+  }
+]
