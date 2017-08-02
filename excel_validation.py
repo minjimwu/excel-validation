@@ -41,14 +41,15 @@ class excel_validation():
                     self.errors = [] # clean any error that have been inserted in check_rule
         return self.result, self.errors
 
-    def check_rule(self, cell, conds):    
-        value = cell.value
-        #value = Tokenizer(cell.value)
-        #print "Value: ", value
+    def check_rule(self, cell, conds): 
+        #print '@' + str(cell.column) + '-' + str(cell.row) + ':'
+        #string 0.7999999999999 => 0.8
+        vtype = type(cell.value).__name__
+        exec('value = ' + vtype + '(str(cell.value))')   
         r = True
         for cond in conds:
             exec('result = ' + cond)  
-            if not result:
+            if not result:                
                 self.errors.append({'cell':cell.coordinate, 'value': value, 'cond': cond})
                 self.result = False
                 r = False
