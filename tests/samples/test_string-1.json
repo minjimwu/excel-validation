@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Sheet1",
+    "rules": [
+      {
+        "cells": [ "A1" ],
+        "conds": [ "value == 'b'" ]
+      }
+    ]
+  }
+]

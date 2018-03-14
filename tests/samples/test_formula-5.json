@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Sheet1",
+    "rules": [
+      {
+	"check_if_skip": {
+        	"cells": [ "A2" ],
+        	"conds": [ "value < 10" ]
+      	},
+        "cells": [ "B2:E2" ],
+        "conds": [ "value >= 0.5" ]
+      }
+    ]
+  }
+]
