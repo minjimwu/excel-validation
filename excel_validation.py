@@ -16,34 +16,51 @@ class excel_validation():
         for sheet_config in self.sheet_configs:
             sheet = self.wb[sheet_config['name']]
             for rule in sheet_config['rules']:
-                oprtor = None
-                satisfy_ANY = False
-                if rule.has_key('operator'):
-                    oprtor = rule['operator']
-                for cells in rule['cells']:
-                    if ':' in cells:
-                        for x in sheet[cells]:
-                            for y in x:                                                        
-                                result = self.check_rule(y, rule['conds'])
-                                if oprtor == 'ANY' and result:
-                                    satisfy_ANY = True
-                                    break
-                            if satisfy_ANY:
-                                break
-                    else:                    
-                        result = self.check_rule(sheet[cells], rule['conds'])
+                if 'check_if_skip' in rule:
+                    satisfy_ANY = self.check_cells(sheet, rule['check_if_skip'])
+                    # if pass check_skip
+                    if self.result:
+                        # then skip validation (doesn't leave any error aftermath)
+                        continue
+                    else:
+                        # reset and continue validation
+                        self.reset()
+                # if no check_skip exist nor
+                satisfy_ANY = self.check_cells(sheet, rule)
+                # check if ANY satisfy for passing this rule
+                if satisfy_ANY:
+                    self.reset()
+        return self.result, self.errors
+
+    def reset(self):
+        self.result = True
+        self.errors = []  # clean any error that have been inserted in check_rule
+
+    def check_cells(self, sheet, rule):
+        satisfy_ANY = False
+        oprtor = None
+        if 'operator' in rule:
+            oprtor = rule['operator']
+        for cells in rule['cells']:
+            if ':' in cells:
+                for x in sheet[cells]:
+                    for y in x:
+                        result = self.check_rule(y, rule['conds'])
                         if oprtor == 'ANY' and result:
                             satisfy_ANY = True
                             break
-                # check if ANY satisfy for passing this rule
-                if satisfy_ANY:
-                    self.result = True
-                    self.errors = [] # clean any error that have been inserted in check_rule
-        return self.result, self.errors
+                    if satisfy_ANY:
+                        break
+            else:
+                result = self.check_rule(sheet[cells], rule['conds'])
+                if oprtor == 'ANY' and result:
+                    satisfy_ANY = True
+                    break
+        return satisfy_ANY
 
     def check_rule(self, cell, conds): 
-        #print '@' + str(cell.column) + '-' + str(cell.row) + ':'
-        #string 0.7999999999999 => 0.8
+        # print '@' + str(cell.column) + '-' + str(cell.row) + ':'
+        # string 0.7999999999999 => 0.8
         vtype = type(cell.value).__name__
         exec('value = ' + vtype + '(str(cell.value))')   
         r = True

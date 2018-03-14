@@ -34,6 +34,31 @@ class test_excel_validation_formula(unittest.TestCase):
         config = os.path.abspath('tests/samples/test_formula-4.json')
         ev = excel_validation(excel, config)
         result, errors = ev.validate()        
+
+        self.assertFalse(result)
+        self.assertEqual(errors[0]['cell'], 'B2')
+        self.assertEqual(errors[1]['cell'], 'E2')
+        
+    def test_check_skip_validation(self):
+        excel = os.path.abspath('tests/samples/test_formula.xlsx')
+        config = os.path.abspath('tests/samples/test_formula-5.json')
+        ev = excel_validation(excel, config)
+        result, errors = ev.validate()
+        self.assertTrue(result)
+
+    def test_check_skip_validation_multiple_rules(self):
+        excel = os.path.abspath('tests/samples/test_formula.xlsx')
+        config = os.path.abspath('tests/samples/test_formula-6.json')
+        ev = excel_validation(excel, config)
+        result, errors = ev.validate()
+        self.assertTrue(result)
+
+    def test_check_not_skip_validation_invalid(self):
+        excel = os.path.abspath('tests/samples/test_formula.xlsx')
+        config = os.path.abspath('tests/samples/test_formula-7.json')
+        ev = excel_validation(excel, config)
+        result, errors = ev.validate()
+
         self.assertFalse(result)
         self.assertEqual(errors[0]['cell'], 'B2')
         self.assertEqual(errors[1]['cell'], 'E2')

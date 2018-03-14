@@ -35,4 +35,13 @@ result (return True or False, Errors)`
     [{'cell': 'A1', 'cond': u'value >= 0.8 and value <= 1', 'value': 0.1}, 
     {'cell': 'B1', 'cond': u'value >= 0.8 and value <= 1', 'value': 0.2}, 
     {'cell': 'E1', 'cond': u'value >= 0.8 and value <= 1', 'value': 0.5}])
+	
+	
+rules:
+{
+	"operator": "optional str; if "ANY", then if one conds match, the entire rule pass. Default rule requires all true to pass validation"
+	"cells": "cells to check"
+	"conds": "conditions for specified cells to check against"
+	"check_if_skip": "optional object (in same structure as rules); if specified this object and pass conds, then skip validation for this rule."
+}
     
